@@ -4,7 +4,7 @@
 
 import * as THREE from 'three';
 import type { BodyPlan, Species } from '../core/types.ts';
-import { at, ball, build, limb, rod, tube, type Part } from './geo.ts';
+import { at, ball, build, limb, tube, type Part } from './geo.ts';
 
 export type Body = {
   geo: THREE.BufferGeometry;
@@ -453,20 +453,18 @@ const plans: Record<BodyPlan, (c1: number, c2: number, sp: Species) => Made> = {
     lights: [[0, -0.05, -0.45]],
     head: [0, 0, 0],
   }),
-  // A cluster of small caps on rotting wood; built in metres.
+  // Leaf litter threaded with glowing mycelium: dead leaves that shine. Built in metres.
   fungus: (c1, c2) => {
     const parts: Part[] = [];
     const lights: V[] = [];
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 16; i++) {
       const a = i * 2.4;
-      const r = 0.012 + (i % 4) * 0.014;
-      const h = 0.018 + (i % 3) * 0.012;
-      const x = Math.cos(a) * r * 2;
-      const z = Math.sin(a) * r * 2;
-      parts.push({ geo: at(rod(0.0018, 0.0014, h, 4), [x, 0, z]), colour: c2 });
-      const cap = new THREE.SphereGeometry(0.008 + (i % 3) * 0.003, 8, 4, 0, Math.PI * 2, 0, Math.PI / 2);
-      parts.push({ geo: at(cap, [x, h - 0.002, z]), colour: c1 });
-      lights.push([x, h + 0.003, z]);
+      const r = 0.06 + ((i * 37) % 29) / 100;
+      const x = Math.cos(a) * r;
+      const z = Math.sin(a) * r;
+      const g = new THREE.CircleGeometry(0.035 + (i % 3) * 0.012, 6);
+      parts.push({ geo: at(g, [x, 0.012 + (i % 4) * 0.004, z], [-Math.PI / 2 + (i % 5) * 0.08, 0, a], [1.6, 1, 1]), colour: i % 2 ? c1 : c2 });
+      lights.push([x, 0.03, z]);
     }
     return { unit: -1, parts, eyes: [], lights, head: [0, 0.03, 0] };
   },
