@@ -63,7 +63,8 @@ export function makePost(width: number, height: number, steps: number): Post {
         vec4 view = uInvProj * clip; view /= view.w;
         float dist = length(view.xyz);
         vec3 ray = view.xyz / max(dist, 1e-4);
-        float jitter = hash(vec3(gl_FragCoord.xy, fract(uTime) * 91.0));
+        // Interleaved gradient noise: a dither that the eye reads as smooth.
+        float jitter = fract(52.9829189 * fract(dot(gl_FragCoord.xy + fract(uTime * 7.0) * 37.0, vec2(0.06711056, 0.00583715))));
 
         // Torch light scattered by mist along the line of sight.
         if (uTorch > 0.001) {
@@ -93,18 +94,18 @@ export function makePost(width: number, height: number, steps: number): Post {
         if (uShafts > 0.001) {
           vec2 delta = (uSunUv - vUv);
           float len = length(delta * vec2(uAspect, 1.0));
-          vec2 stepUv = delta / 22.0;
+          vec2 stepUv = delta / 30.0;
           vec2 uv = vUv + stepUv * jitter;
           float acc = 0.0; float w = 1.0;
-          for (int i = 0; i < 22; i++) {
+          for (int i = 0; i < 30; i++) {
             if (uv.x > 0.0 && uv.x < 1.0 && uv.y > 0.0 && uv.y < 1.0) {
               float dz = texture2D(tDepth, uv).x;
               vec3 sc = texture2D(tColor, uv).rgb;
               acc += step(0.99999, dz) * min(dot(sc, vec3(0.3333)), 1.5) * w;
             }
-            w *= 0.955; uv += stepUv;
+            w *= 0.965; uv += stepUv;
           }
-          col += uShaftColour * acc * uShafts * 0.085 * smoothstep(1.6, 0.0, len);
+          col += uShaftColour * acc * uShafts * 0.06 * smoothstep(1.6, 0.0, len);
         }
 
         col *= uExposure;
