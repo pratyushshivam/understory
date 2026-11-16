@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "description": "One night on the floor of the Amazon rainforest, from dusk to the dawn chorus, with one torch.",
+  "homepage": "https://pratyushshivam.github.io/understory/",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
