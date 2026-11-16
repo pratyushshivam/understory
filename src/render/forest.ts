@@ -625,11 +625,11 @@ export function buildForest(world: World, quality: { plants: number }): Forest {
           vec3 night = mix(vec3(0.004, 0.006, 0.010), vec3(0.0015, 0.002, 0.005), up);
           // Twilight: deep blue overhead, a band of rose and amber where the sun will be.
           vec3 twiZen = vec3(0.035, 0.075, 0.16);
-          vec3 twiHor = mix(vec3(0.09, 0.13, 0.21), vec3(1.25, 0.5, 0.2), pow(toward, 2.5));
+          vec3 twiHor = mix(vec3(0.09, 0.13, 0.21), vec3(1.0, 0.36, 0.13), pow(toward, 2.5));
           vec3 twi = mix(twiHor, twiZen, pow(up, 0.7));
           // Day just after sunrise: pale gold low, soft blue high.
-          vec3 dayHor = mix(vec3(0.55, 0.62, 0.70), vec3(2.2, 1.25, 0.6), pow(toward, 2.0));
-          vec3 day = mix(dayHor, vec3(0.20, 0.36, 0.62), pow(up, 0.75));
+          vec3 dayHor = mix(vec3(0.34, 0.42, 0.52), vec3(1.5, 0.72, 0.28), pow(toward, 2.0));
+          vec3 day = mix(dayHor, vec3(0.13, 0.25, 0.46), pow(up, 0.75));
           float a = smoothstep(0.0, 0.55, uDay);
           float b = smoothstep(0.5, 1.0, uDay);
           vec3 c = mix(mix(night, twi, a), day, b);
@@ -640,8 +640,8 @@ export function buildForest(world: World, quality: { plants: number }): Forest {
           vec3 f = fract(sp) - 0.5;
           float star = step(0.994, s) * smoothstep(0.32, 0.0, length(f)) * (0.3 + 0.7 * hash(g + 3.0));
           c += vec3(0.9, 0.95, 1.0) * star * 0.9 * (1.0 - a) * smoothstep(0.02, 0.25, d.y) * (1.0 - uCloud);
-          float sunGlow = pow(max(dot(d, normalize(uSun)), 0.0), 48.0);
-          c += vec3(1.6, 1.0, 0.5) * sunGlow * b * 1.5;
+          float sd = max(dot(d, normalize(uSun)), 0.0);
+          c += vec3(1.8, 1.0, 0.42) * (pow(sd, 40.0) * 0.9 + pow(sd, 900.0) * 14.0) * smoothstep(0.35, 1.0, uDay);
           c = mix(c, vec3(dot(c, vec3(0.33))) * 0.6, uCloud * 0.7);
           gl_FragColor = vec4(c, 1.0);
         }`,
