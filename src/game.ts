@@ -18,7 +18,7 @@ export type GoalId = 'potoo' | 'dark' | 'river' | 'count';
 export const GOALS: Record<GoalId, { text: string; done: string }> = {
   potoo: { text: 'Someone is whistling in the dark: slow notes, falling. Find the singer.', done: 'You found the singer.' },
   dark: { text: 'Switch off the torch and stand still. Let your eyes arrive.', done: 'The forest has its own light.' },
-  river: { text: 'Walk east until the trees end. Reach the river.', done: 'The river.' },
+  river: { text: 'Walk south until the trees end. Reach the river.', done: 'The river.' },
   count: { text: 'Meet twelve of the forest’s animals before the sun does.', done: 'Twelve animals know you were here.' },
 };
 export const COUNT_GOAL = 12;
@@ -53,7 +53,7 @@ export class Game {
 
   // You.
   pos = new THREE.Vector3(SITE.start.x, 0, SITE.start.z);
-  yaw = 0; // facing -z: toward the river
+  yaw = 0; // facing -z: south, toward the river
   pitch = 0;
   private vel = new THREE.Vector2();
   private bob = 0;
@@ -448,7 +448,10 @@ export class Game {
     // Light of the sky. `day` is 0 in full night and 1 once the sun is up.
     const day = THREE.MathUtils.smoothstep(elev, -13, 2);
     const evening = hour > 12;
-    const sunDir = this.tmp.set(0.28, Math.sin(Math.max(elev, -20) * DEG), (evening ? 1 : -1) * Math.cos(elev * DEG)).normalize();
+    // The river runs east. The sun comes up along it, over open water, and sets up it.
+    const sunDir = this.tmp
+      .set((evening ? 1 : -1) * Math.cos(Math.max(elev, -20) * DEG), Math.sin(Math.max(elev, -20) * DEG), -0.13)
+      .normalize();
     const skyU = this.forest.sky.material.uniforms;
     skyU.uSun!.value.copy(sunDir);
     skyU.uDay!.value = Math.min(1, day + this.flash * 0.5);
@@ -456,7 +459,9 @@ export class Game {
     this.forest.sky.position.copy(this.pos);
 
     const seeing = 1 + this.adapt * 5;
-    const amb = 0.0016 * seeing + Math.pow(ambient, 2.2) * 1.5 + this.flash * 0.5;
+    // Dusk under a closed canopy is far dimmer than dawn looks to rested eyes.
+    const gloom = evening ? 0.3 : 1;
+    const amb = 0.0016 * seeing + Math.pow(ambient, 2.2) * 1.5 * gloom + this.flash * 0.5;
     this.hemi.intensity = amb;
     this.hemi.color.setRGB(0.55 + 0.45 * day, 0.66 + 0.3 * day, 0.85 + 0.1 * day);
     this.sun.position.copy(sunDir).multiplyScalar(100);
@@ -465,12 +470,12 @@ export class Game {
     this.sun.intensity = warm * 1.4;
     const fogNight = 0.0009 * seeing;
     this.fog.color.setRGB(
-      fogNight * 0.8 + ambient * ambient * (0.2 + 0.45 * warm) + this.flash * 0.05,
-      fogNight + ambient * ambient * (0.26 + 0.3 * warm) + this.flash * 0.06,
-      fogNight * 1.3 + ambient * ambient * (0.3 + 0.12 * warm) + this.flash * 0.09,
+      fogNight * 0.8 + ambient * ambient * (0.2 + 0.45 * warm) * gloom + this.flash * 0.05,
+      fogNight + ambient * ambient * (0.26 + 0.3 * warm) * gloom + this.flash * 0.06,
+      fogNight * 1.3 + ambient * ambient * (0.3 + 0.12 * warm) * gloom * (evening ? 1.25 : 1) + this.flash * 0.09,
     );
     const mist = 0.35 + this.afterRain * 0.45 + THREE.MathUtils.smoothstep(hour > 12 ? 0 : hour, 3.5, 5.6) * 0.5;
-    this.fog.density = 0.024 + mist * 0.012 - warm * 0.012;
+    this.fog.density = (0.024 + mist * 0.012) * (1 - 0.72 * THREE.MathUtils.smoothstep(ambient, 0.55, 1));
     this.forest.water.material.emissive.setRGB(0.02 * day + 0.5 * warm * 0.35, 0.03 * day + 0.28 * warm * 0.35, 0.06 * day + 0.12 * warm * 0.3);
 
     this.forest.sway.uRain.value = this.rain;

@@ -194,6 +194,15 @@ function setPaused(): void {
   game.sound.setPaused(p || document.hidden);
 }
 
+const lock = () => {
+  try {
+    const p = $('stage').requestPointerLock() as unknown as Promise<void> | undefined;
+    p?.catch?.(() => {});
+  } catch {
+    // Pointer lock is a comfort, not a requirement.
+  }
+};
+
 // ───── Controls ─────
 const canvas = $<HTMLCanvasElement>('stage');
 const keys = new Set<string>();
@@ -231,7 +240,7 @@ if (!coarse) {
   canvas.addEventListener('click', () => {
     if (!game.running) return;
     if (document.pointerLockElement === canvas) game.toggleTorch();
-    else void canvas.requestPointerLock();
+    else lock();
   });
   document.addEventListener('pointerlockchange', () => {
     const locked = document.pointerLockElement === canvas;
@@ -297,7 +306,7 @@ if (!coarse) {
 $('begin').onclick = async () => {
   $('title').classList.add('gone');
   $('hud').hidden = false;
-  if (!coarse) void canvas.requestPointerLock();
+  if (!coarse) lock();
   await game.begin();
   renderGoals(game);
   window.setTimeout(() => whisper('You have one torch. Everything else out here can see in the dark.', 6000), 2500);
