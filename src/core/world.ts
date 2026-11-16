@@ -11,10 +11,10 @@ export const SITE = {
   riverZ: -74,
   waterY: -2.2,
   start: { x: 4, z: 72 },
-  /** Trees at least 10 cm thick per hectare of land, as counted in the Yasuní forest plot. */
-  stemsPerHectare: 700,
-  /** Share of those stems that are the stilt palm Iriartea deltoidea, the commonest tree there. */
-  palmShare: 0.08,
+  /** Trees at least 10 cm thick per hectare: the count in the 25-ha Yasuní plot (Valencia et al. 2004). */
+  stemsPerHectare: 702,
+  /** Share of those trees that are the stilt palm Iriartea deltoidea, the commonest of them (same paper). */
+  palmShare: 0.103,
 } as const;
 
 /** Centre line of the forest stream: it wanders north to the river. */
@@ -85,7 +85,7 @@ function growTrees(rng: Rng): Tree[] {
     const emergent = rng.chance(0.012);
     if (emergent) dbhCm = rng.range(90, 180);
     dbhCm = Math.min(dbhCm, 180);
-    const palm = !emergent && dbhCm < 32 && rng.chance(SITE.palmShare / 0.9);
+    const palm = !emergent && dbhCm < 32 && rng.chance(SITE.palmShare / 0.91);
     if (palm) dbhCm = rng.range(12, 24);
     const dbh = dbhCm / 100;
     // Keep trunks from growing into each other.
