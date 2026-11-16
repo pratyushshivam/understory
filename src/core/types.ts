@@ -74,6 +74,8 @@ export type Species = {
   voice: Voice;
   /** Eyeshine: reflectance 0 means no tapetum, so no shine at all. */
   eye: { reflectance: number; pupilMm: number; colour: number; note: string };
+  /** Light the animal or fungus makes itself. */
+  glow?: { colour: number; pattern: 'steady' | 'flash' | 'pulse'; strength: number; note: string };
   /** How many individuals a night holds, low to high. */
   count: readonly [number, number];
   fact: string;
