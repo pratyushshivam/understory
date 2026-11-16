@@ -196,7 +196,7 @@ export function buildCreatures(world: World, speciesList: readonly Species[]): C
           float b = 1.0 - exp(-aI * 40.0);
           vB = b; vC = aColour;
           float px = uScale * aSize * 2.4 / max(-mv.z, 0.1);
-          gl_PointSize = (b < 0.004) ? 0.0 : clamp(px + (2.0 + 7.0 * b) * uDpr, 0.0, 44.0 * uDpr);
+          gl_PointSize = (b < 0.004) ? 0.0 : clamp(px + (2.5 + 9.0 * b) * uDpr, 0.0, 48.0 * uDpr);
         }`,
       fragmentShader: `
         varying vec3 vC; varying float vB;

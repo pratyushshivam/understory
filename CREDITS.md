@@ -34,7 +34,7 @@ The list the build reads is [`audio/sources.json`](audio/sources.json); the scri
 | Boana lanciformis | [XC1051344](https://xeno-canto.org/1051344) | Fabrice Schmitt | Raimondi (near Oventeni), Atalaya, Ucayali, Peru | [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) | 17.3 s to 23.9 s | From Ucayali, Peru. |
 | Boana boans | [XC1050023](https://xeno-canto.org/1050023) | Fabrice Schmitt | Yuyapichis District, Puerto Inca Province, Huanuco, Peru | [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) | 46.9 s to 53.5 s | From Huánuco, Peru. |
 | Rhinella marina | [XC1051348](https://xeno-canto.org/1051348) | Fabrice Schmitt | Raimondi (near Oventeni), Atalaya, Ucayali, Peru | [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) | 13.3 s to 20.9 s | From Ucayali, Peru. |
-| Callimedusa tomopterna | [XC882732](https://xeno-canto.org/882732) | M.S. Hoogmoed | Rondônia, 10 kilometer east of Porto Velho, Brazil | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | 116.6 s to 123.3 s | A 1970s tape from Rondônia, Brazil. |
+| Callimedusa tomopterna | [XC882732](https://xeno-canto.org/882732) | M.S. Hoogmoed | Rondônia, 10 kilometer east of Porto Velho, Brazil | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | 116.6 s to 123.3 s | A 1985 tape from Rondônia, Brazil. |
 
 Thank you to the recordists. Without them this would be a silent forest.
 

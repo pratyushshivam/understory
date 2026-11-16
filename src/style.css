@@ -335,9 +335,21 @@ button.quiet {
   #heard {
     right: auto;
     left: 20px;
-    bottom: auto;
-    top: 62px;
     text-align: left;
+    max-width: 56vw;
+  }
+  #goals {
+    max-width: 58vw;
+  }
+  #goals li {
+    font-size: 13.5px;
+    margin-bottom: 6px;
+  }
+  #goals.rest {
+    opacity: 0;
+  }
+  #whisper {
+    bottom: 30%;
   }
 }
 

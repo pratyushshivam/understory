@@ -133,7 +133,10 @@ const game = new Game($<HTMLCanvasElement>('stage'), night, quality, {
       `You met ${seen} of the forest’s animals. ${heardOnly} more you heard and never saw. ` +
       `${SPECIES.length - seen - heardOnly} were there all night and never let you know.`;
     document.exitPointerLock?.();
-    window.setTimeout(() => ($('end').hidden = false), 6000);
+    window.setTimeout(() => {
+      $('end').hidden = false;
+      $('hud').hidden = true;
+    }, 6000);
   },
 });
 
