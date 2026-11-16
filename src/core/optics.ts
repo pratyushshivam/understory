@@ -8,9 +8,9 @@ export type Vec3 = { x: number; y: number; z: number };
 
 export const TORCH = {
   /** Half-angle of the bright centre of the beam, degrees. */
-  innerDeg: 9,
+  innerDeg: 10,
   /** Half-angle at which the beam has faded to nothing, degrees. */
-  outerDeg: 21,
+  outerDeg: 25,
   /** Beam strength in candela: a good hand torch (about 300 lumens in this cone). */
   candela: 900,
 } as const;
