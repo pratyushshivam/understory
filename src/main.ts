@@ -308,6 +308,7 @@ if (!coarse) {
 // ───── Begin ─────
 $('begin').onclick = async () => {
   $('title').classList.add('gone');
+  window.setTimeout(() => ($('title').hidden = true), 2600);
   $('hud').hidden = false;
   if (!coarse) lock();
   await game.begin();
